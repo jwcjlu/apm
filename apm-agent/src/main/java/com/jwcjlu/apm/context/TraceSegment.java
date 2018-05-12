@@ -1,0 +1,60 @@
+package com.jwcjlu.apm.context;
+
+import com.jwcjlu.apm.protocol.TraceObject;
+import com.jwcjlu.apm.protocol.UpstreamSegment;
+
+import java.util.LinkedList;
+public class TraceSegment {
+    private String traceId;
+    private LinkedList<SpanEntry> spans;
+    private String applicationName;
+    public TraceSegment(String traceId,String applicationName){
+        this.traceId=traceId;
+        this.applicationName=applicationName;
+        spans=new LinkedList<>();
+    }
+
+    public String getTraceId() {
+        return traceId;
+    }
+
+    public void setTraceId(String traceId) {
+        this.traceId = traceId;
+    }
+
+
+
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+    public void addSpan(SpanEntry spanEntry){
+        spans.add(spanEntry);
+    }
+    public void stopSpan(){
+        for(SpanEntry  span:spans){
+            span.stop();
+        }
+
+    }
+    public UpstreamSegment  transform(){
+        UpstreamSegment.Builder upstreamBuilder = UpstreamSegment.newBuilder();
+        TraceObject.Builder traceSegmentBuilder = TraceObject.newBuilder();
+        /**
+         * Trace Segment
+         */
+       // traceSegmentBuilder.setTraceId(this.traceId);
+        // Don't serialize TraceSegmentReference
+        // SpanObject
+        for (SpanEntry span : this.spans) {
+            traceSegmentBuilder.addSpans(span.transform());
+        }
+        traceSegmentBuilder.setTraceId(traceId);
+        traceSegmentBuilder.setApplicationName(applicationName);
+        upstreamBuilder.setSegment(traceSegmentBuilder.build().toByteString());
+        return upstreamBuilder.build();
+    }
+}

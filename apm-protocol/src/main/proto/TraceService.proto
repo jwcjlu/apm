@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.jwcjlu.apm.protocol";
+option csharp_namespace = "Apm.Protocol";
+import "Downstream.proto";
+
+service TraceService {
+    rpc collect (stream UpstreamSegment) returns (Downstream) {
+    }
+}
+
+message UpstreamSegment {
+    string globalTraceIds = 1;
+    bytes segment = 2; // the byte array of TraceSegmentObject
+}
+
+message TraceObject {
+    string traceId = 1;
+    repeated SpanObject spans = 2;
+    string applicationName = 3;
+}
+
+message SpanObject {
+    int32 spanId = 1;
+    int32 parentSpanId = 2;
+    int64 startTime = 3;
+    int64 endTime = 4;
+    string operationName =5;
+    string peer = 6;
+}
