@@ -5,7 +5,7 @@ import com.jwcjlu.apm.MethodInvokerResult;
 
 import java.lang.reflect.Method;
 
-public class ApmMethodAroundInterceptor implements MethodAroundInterceptor {
+public class TraceThreadMethodAroundInterceptor implements MethodAroundInterceptor {
     @Override
     public void beforeMethod(Object targetObject, Method method, Object[] allArguments, Class<?>[] parameterTypes, MethodInvokerResult result) {
         System.out.println("beforeMethod");

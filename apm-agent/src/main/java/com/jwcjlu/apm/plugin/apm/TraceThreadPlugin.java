@@ -2,10 +2,10 @@ package com.jwcjlu.apm.plugin.apm;
 
 import com.jwcjlu.apm.plugin.PluginDefine;
 
-public class ApmPlugin implements PluginDefine {
+public class TraceThreadPlugin implements PluginDefine {
     @Override
     public String enchanceClass() {
-        return "com.jwcjlu.apm.annotation";
+        return "com.jwcjlu.apm.annotation.TraceThread";
     }
 
     @Override

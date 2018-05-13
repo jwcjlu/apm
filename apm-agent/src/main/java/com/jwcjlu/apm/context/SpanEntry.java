@@ -1,5 +1,6 @@
 package com.jwcjlu.apm.context;
 
+import com.jwcjlu.apm.SpanEnum;
 import com.jwcjlu.apm.protocol.SpanObject;
 
 public class SpanEntry {
@@ -9,11 +10,13 @@ public class SpanEntry {
     private String peer;
     private long startTime;
     private long endTime;
-    public SpanEntry(String spanId,String parentSpanId,String operationName,String peer){
+    private SpanEnum type;
+    public SpanEntry(String spanId,String parentSpanId,String operationName,String peer,SpanEnum type){
         this.spanId=spanId;
         this.parentSpanId=parentSpanId;
         this.operationName=operationName;
         this.peer=peer;
+        this.type=type;
     }
     public void start(){
         startTime=System.currentTimeMillis();
@@ -40,6 +43,9 @@ public class SpanEntry {
     public long getStartTime() {
         return startTime;
     }
+    public void setType(SpanEnum spanEnum){
+        this.type=spanEnum;
+    }
 
     public long getEndTime() {
         return endTime;
@@ -47,7 +53,7 @@ public class SpanEntry {
     public SpanObject transform(){
         SpanObject.Builder builder=  SpanObject.newBuilder();
         return builder.setEndTime(endTime).setOperationName(operationName).setStartTime(startTime)
-                .setPeer(peer).setParentSpanId(parentSpanId).setSpanId(spanId).build();
+                .setPeer(peer).setParentSpanId(parentSpanId).setSpanId(spanId).setType(type.name()).build();
     }
 
 }

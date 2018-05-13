@@ -28,4 +28,5 @@ message SpanObject {
     int64 endTime = 4;
     string operationName =5;
     string peer = 6;
+    string type=7;
 }

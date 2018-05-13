@@ -1,12 +1,11 @@
 package com.jwcjlu.apm.plugin;
 
 import com.jwcjlu.apm.InstMethodInter;
-import com.jwcjlu.apm.annotation.Apm;
-import com.jwcjlu.apm.plugin.apm.ApmMethodAroundInterceptor;
+import com.jwcjlu.apm.annotation.TraceThread;
+import com.jwcjlu.apm.plugin.apm.TraceThreadMethodAroundInterceptor;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.implementation.MethodDelegation;
-import net.bytebuddy.implementation.SuperMethodCall;
 import net.bytebuddy.matcher.ElementMatchers;
 
 import java.util.Iterator;
@@ -28,9 +27,9 @@ public class PluginsFinder {
                                                 ClassLoader classLoader)throws ClassNotFoundException,InstantiationException, IllegalAccessException{
         if(!pluginMap.containsKey(typeDescription.getName())){
             return builder.method(
-                    ElementMatchers.isAnnotatedWith(Apm.class)
+                    ElementMatchers.isAnnotatedWith(TraceThread.class)
             ).intercept(
-                    MethodDelegation.to(new InstMethodInter(new ApmMethodAroundInterceptor()))
+                    MethodDelegation.to(new InstMethodInter(new TraceThreadMethodAroundInterceptor()))
             );
         }
         return ClassEnchancePluginDefine.enchance(typeDescription,builder,classLoader,pluginMap.get(typeDescription.getName()));

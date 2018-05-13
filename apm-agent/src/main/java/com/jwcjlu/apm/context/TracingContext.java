@@ -1,5 +1,6 @@
 package com.jwcjlu.apm.context;
 
+import com.jwcjlu.apm.SpanEnum;
 import com.jwcjlu.apm.grpc.TraceServiceClient;
 import com.jwcjlu.apm.remote.RemoteConfig;
 import io.netty.util.internal.StringUtil;
@@ -12,7 +13,9 @@ public class TracingContext {
     private TraceSegment  traceSegment;
     private String parentSpanId=0+"";
     public SpanEntry createSpan(String operationName, CarrierContext carrier,String remotePeer){
+        SpanEnum  type=SpanEnum.ENTRY;
         if(!StringUtil.isNullOrEmpty(carrier.getSpanId())){
+            type=SpanEnum.EXIT;
             parentSpanId=carrier.getSpanId();
         }
         if(StringUtil.isNullOrEmpty(carrier.getTraceId())&&StringUtil.isNullOrEmpty(traceId)){
@@ -23,7 +26,7 @@ public class TracingContext {
             traceId=carrier.getTraceId();
             traceSegment=new TraceSegment(traceId, RemoteConfig.APPLICATIONNAME);
         }
-          SpanEntry span= new SpanEntry(buildSpanId(),parentSpanId,operationName,remotePeer);
+          SpanEntry span= new SpanEntry(buildSpanId(),parentSpanId,operationName,remotePeer,type);
           traceSegment.addSpan(span);
 
            return span;
