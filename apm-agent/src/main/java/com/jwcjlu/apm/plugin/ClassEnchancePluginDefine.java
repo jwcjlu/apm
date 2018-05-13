@@ -6,6 +6,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.implementation.SuperMethodCall;
+import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.matcher.NameMatcher;
 import net.bytebuddy.matcher.StringMatcher;
 public  class ClassEnchancePluginDefine {
@@ -19,7 +20,7 @@ public  class ClassEnchancePluginDefine {
             classLoader= Thread.currentThread().getContextClassLoader();
             isNullClassLoad=true;
         }
-        DynamicType.Builder<?>  newClassBuilder=enchanceInstanceMethod(typeDescription,builder,classLoader,pd);
+        DynamicType.Builder<?>   newClassBuilder =enchanceInstanceMethod(typeDescription,builder,classLoader,pd);
         if(isNullClassLoad){
             classLoader=null;
         }
@@ -36,18 +37,17 @@ public  class ClassEnchancePluginDefine {
                 new NameMatcher(new StringMatcher(pd.enchanceMethod(), StringMatcher.Mode.EQUALS_FULLY))
         ).intercept(
                 MethodDelegation.to(new InstMethodInter(interceptorClass.newInstance()))
-                        .andThen(SuperMethodCall.INSTANCE)
         );
         return newClassBuilder;
 
     }
-    private static  DynamicType.Builder<?> enchanceAnnotationMethod(TypeDescription typeDescription, DynamicType.Builder<?> builder,
-                                                                  ClassLoader classLoader, PluginDefine pd) throws
+    public static  DynamicType.Builder<?> enchanceAnnotationMethod(TypeDescription typeDescription, DynamicType.Builder<?> builder,
+                                                                  ClassLoader classLoader, PluginDefine pd,Class clazz) throws
             IllegalAccessException, InstantiationException, ClassNotFoundException {
         Class<MethodAroundInterceptor>interceptorClass=(Class<MethodAroundInterceptor>)classLoader.loadClass(pd.getMethodAroundInterceptor());
 
         DynamicType.Builder<?>  newClassBuilder= builder.method(
-                new NameMatcher(new StringMatcher(pd.enchanceMethod(), StringMatcher.Mode.EQUALS_FULLY))
+                ElementMatchers.isAnnotatedWith(clazz)
         ).intercept(
                 MethodDelegation.to(new InstMethodInter(interceptorClass.newInstance()))
                         .andThen(SuperMethodCall.INSTANCE)

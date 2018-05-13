@@ -23,6 +23,7 @@ public class InstMethodInter {
             interceptor.beforeMethod(targetObject, method, allArguments, method.getParameterTypes(),
                     result);
         } catch (Throwable t) {
+            System.out.println(t);
             System.out.println(String.format( "class[{}] before method[{}] intercept failure", targetObject.getClass(), method.getName()));
         }
 
@@ -35,6 +36,7 @@ public class InstMethodInter {
             }
         } catch (Throwable t) {
             try {
+                System.out.println(t);
                 interceptor.handleMethodException(targetObject, method, allArguments, method.getParameterTypes(),
                         t);
             } catch (Throwable t2) {
@@ -46,6 +48,7 @@ public class InstMethodInter {
                 ret = interceptor.afterMethod(targetObject, method, allArguments, method.getParameterTypes(),
                         ret);
             } catch (Throwable t) {
+                System.out.println(t);
                 System.out.println(String.format("class[{}] after method[{}] intercept failure",  targetObject.getClass(), method.getName()));
             }
         }

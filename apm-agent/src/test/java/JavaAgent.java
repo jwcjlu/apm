@@ -1,5 +1,9 @@
+import com.jwcjlu.apm.annotation.Apm;
+
 public class JavaAgent {
     public static void main(String[]agrs){
-        System.out.println("Hello World");
+
+        new HelloService().sayHello();
     }
+
 }

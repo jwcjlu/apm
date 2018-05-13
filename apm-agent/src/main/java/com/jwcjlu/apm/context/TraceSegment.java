@@ -7,37 +7,37 @@ import java.util.LinkedList;
 public class TraceSegment {
     private String traceId;
     private LinkedList<SpanEntry> spans;
+    private LinkedList<SpanEntry> activeSpans;
     private String applicationName;
     public TraceSegment(String traceId,String applicationName){
         this.traceId=traceId;
         this.applicationName=applicationName;
         spans=new LinkedList<>();
+        activeSpans=new LinkedList<>();
     }
-
     public String getTraceId() {
         return traceId;
     }
-
     public void setTraceId(String traceId) {
         this.traceId = traceId;
     }
-
-
-
     public String getApplicationName() {
         return applicationName;
     }
-
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
     }
     public void addSpan(SpanEntry spanEntry){
-        spans.add(spanEntry);
+        activeSpans.add(spanEntry);
     }
-    public void stopSpan(){
-        for(SpanEntry  span:spans){
-            span.stop();
+    public boolean stopSpan(){
+        if(activeSpans.isEmpty()){
+            return false;
         }
+        SpanEntry spanEntry=  activeSpans.removeLast();
+        spanEntry.stop();
+        spans.add(spanEntry);
+        return activeSpans.isEmpty();
 
     }
     public UpstreamSegment  transform(){

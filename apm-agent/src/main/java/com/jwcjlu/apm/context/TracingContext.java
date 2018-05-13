@@ -10,11 +10,10 @@ public class TracingContext {
     private String traceId;
     private AtomicInteger  spanId=new AtomicInteger();
     private TraceSegment  traceSegment;
-    private int parentSpanId=-1;
+    private String parentSpanId=0+"";
     public SpanEntry createSpan(String operationName, CarrierContext carrier,String remotePeer){
-        if(carrier.getSpanId()!=-1){
+        if(!StringUtil.isNullOrEmpty(carrier.getSpanId())){
             parentSpanId=carrier.getSpanId();
-            spanId=new AtomicInteger(carrier.getSpanId());
         }
         if(StringUtil.isNullOrEmpty(carrier.getTraceId())&&StringUtil.isNullOrEmpty(traceId)){
             traceId= UUID.randomUUID().toString();
@@ -24,7 +23,7 @@ public class TracingContext {
             traceId=carrier.getTraceId();
             traceSegment=new TraceSegment(traceId, RemoteConfig.APPLICATIONNAME);
         }
-          SpanEntry span= new SpanEntry(spanId.incrementAndGet(),parentSpanId,operationName,remotePeer);
+          SpanEntry span= new SpanEntry(buildSpanId(),parentSpanId,operationName,remotePeer);
           traceSegment.addSpan(span);
 
            return span;
@@ -32,13 +31,14 @@ public class TracingContext {
     public String getTraceId() {
         return traceId;
     }
-
-    public AtomicInteger getSpanId() {
-        return spanId;
-    }
-
     public void stopSpan(){
-        traceSegment.stopSpan();
-        TraceServiceClient.getInstance().collector(traceSegment);
+        if(traceSegment.stopSpan()) {
+            TraceServiceClient.getInstance().collector(traceSegment);
+        }
+    }
+    private String buildSpanId(){
+    StringBuilder  builder=new StringBuilder();
+    builder.append(parentSpanId).append(".").append(spanId.incrementAndGet());
+    return builder.toString();
     }
 }

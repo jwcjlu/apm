@@ -2,11 +2,11 @@ package com.jwcjlu.apm.context;
 
 public class CarrierContext {
     private String traceId;
-    private int spanId=-1;
+    private String spanId;
     public  CarrierContext(){
 
     }
-    public CarrierContext(String traceId,int spanId){
+    public CarrierContext(String traceId,String spanId){
         this.traceId=traceId;
         this.spanId=spanId;
     }
@@ -18,15 +18,15 @@ public class CarrierContext {
         this.traceId = traceId;
     }
 
-    public int getSpanId() {
+    public String getSpanId() {
         return spanId;
     }
 
-    public void setSpanId(int spanId) {
+    public void setSpanId(String spanId) {
         this.spanId = spanId;
     }
     public void inject(TracingContext context){
-        this.spanId=context.getSpanId().get();
+       /* this.spanId=context.getSpanId().get();*/
         this.traceId=context.getTraceId();
     }
 

@@ -9,6 +9,7 @@ public class OrderServiceImpl implements OrderService {
     private UserService userService;
     @Override
     public Order find(int orderId, int userId) {
+        System.out.println("OrderServiceImpl");
         User user=userService.find(userId);
         Order order=new Order();
         order.setMemony(100);

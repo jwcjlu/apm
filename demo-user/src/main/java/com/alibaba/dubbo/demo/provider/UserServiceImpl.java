@@ -11,6 +11,7 @@ public class UserServiceImpl implements UserService{
         user.setAge(20);
         user.setName("zhangSan");
         user.setUserId(userId);
+        System.out.println("UserServiceImpl");
         return user;
     }
 }

@@ -22,8 +22,8 @@ message TraceObject {
 }
 
 message SpanObject {
-    int32 spanId = 1;
-    int32 parentSpanId = 2;
+    string spanId = 1;
+    string parentSpanId = 2;
     int64 startTime = 3;
     int64 endTime = 4;
     string operationName =5;

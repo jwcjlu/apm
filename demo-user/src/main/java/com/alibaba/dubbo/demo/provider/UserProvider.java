@@ -26,7 +26,7 @@ public class UserProvider {
         System.setProperty("java.net.preferIPv4Stack", "true");
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo-demo-provider.xml"});
         context.start();
-
+        System.out.println("sucess!!!");
         System.in.read(); // press any key to exit
     }
 

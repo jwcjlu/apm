@@ -29,13 +29,15 @@ public class DubboMethodAroundInterceptor implements MethodAroundInterceptor {
         if(isConsumer){
             CarrierContext carrier=new CarrierContext();
             span= ContextManager.createSpan(generateOperationName(requestURL,invocation),carrier,host+port);
+            System.out.println("beforeMethod consumer "+generateOperationName(requestURL,invocation));
             rpcContext.getAttachments().put("traceId",carrier.getTraceId());
-            rpcContext.getAttachments().put("spanId",carrier.getSpanId()+"");
+            rpcContext.getAttachments().put("spanId",carrier.getSpanId());
         }else{
             String traceId=rpcContext.getAttachment("traceId");
             String spandId=rpcContext.getAttachment("spanId");
-            CarrierContext carrier=new CarrierContext(traceId,Integer.valueOf(spandId));
+            CarrierContext carrier=new CarrierContext(traceId,spandId);
             span= ContextManager.createSpan(generateOperationName(requestURL,invocation),carrier,host+port);
+            System.out.println("beforeMethod provider "+generateOperationName(requestURL,invocation));
         }
         span.start();
 
@@ -43,6 +45,7 @@ public class DubboMethodAroundInterceptor implements MethodAroundInterceptor {
 
     @Override
     public Object afterMethod(Object targetObject, Method method, Object[] allArguments, Class<?>[] parameterTypes, Object result) {
+        System.out.println("afterMethod consumer "+targetObject);
         ContextManager.stopSpan();
         return result;
     }

@@ -1,10 +1,25 @@
 package com.jwcjlu.apm;
 
 public class MethodInvokerResult {
+    private boolean isContinue = true;
     public boolean isContinue(){
-        return true;
+        return isContinue;
     }
-    public Object  _ret(){
-        return null;
+    private Object ret = null;
+
+    /**
+     * define the new return value.
+     *
+     * @param ret new return value.
+     */
+    public void defineReturnValue(Object ret) {
+        this.isContinue = false;
+        this.ret = ret;
+    }
+    /**
+     * @return the new return value.
+     */
+    Object _ret() {
+        return ret;
     }
 }

@@ -3,7 +3,7 @@ package com.jwcjlu.apm.context;
 
 public class ContextManager {
     private static ThreadLocal<TracingContext> CONTEXT = new ThreadLocal<TracingContext>();
-    public static TracingContext createOrGetTracingContext(String operationName){
+    public static TracingContext createOrGetTracingContext(){
         TracingContext context=CONTEXT.get();
         if(context==null){
             context=new TracingContext();
@@ -12,7 +12,7 @@ public class ContextManager {
         return context;
     }
     public static SpanEntry createSpan(String operationName,  CarrierContext carrier,String remotePeer) {
-        TracingContext context = createOrGetTracingContext(operationName);
+        TracingContext context = createOrGetTracingContext();
         SpanEntry span = context.createSpan(operationName, carrier,remotePeer);
         carrier.setTraceId(context.getTraceId());
         carrier.setSpanId(span.getSpanId());
