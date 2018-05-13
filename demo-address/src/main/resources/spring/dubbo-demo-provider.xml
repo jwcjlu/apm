@@ -21,20 +21,17 @@ limitations under the License.
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <!-- provider's application name, used for tracing dependency relationship -->
-    <dubbo:application name="demo-provider-user"/>
+    <!-- consumer's application name, used for tracing dependency relationship (not a matching criterion),
+    don't set it same as provider -->
+    <dubbo:application name="demo-provider-address"/>
 
-    <!-- use multicast registry center to export service -->
+    <!-- use multicast registry center to discover service -->
     <dubbo:registry address="multicast://224.5.6.7:1234"/>
-
-    <!-- use dubbo protocol to export service on port 20880 -->
-    <dubbo:protocol name="dubbo" port="20881"/>
-
-    <!-- service implementation, as same as regular local bean -->
-    <bean id="userService" class="com.alibaba.dubbo.demo.provider.UserServiceImpl" />
-
-    <!-- declare the service interface to be exported -->
-    <dubbo:service interface="com.alibaba.dubbo.demo.UserService" ref="userService" timeout="40000"  retries="0"/>
+    <dubbo:protocol name="dubbo" port="20882"/>
+    <!-- generate proxy for the remote service, then demoService can be used in the same way as the
+    local regular interface -->
+     <bean id="addressService" class="com.alibaba.dubbo.demo.provider.AddressServiceImpl" />
+    <dubbo:service  interface="com.alibaba.dubbo.demo.AddressService" timeout="40000"  retries="0" ref="addressService"/>
 
 
 

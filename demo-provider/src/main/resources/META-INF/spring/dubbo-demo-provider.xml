@@ -38,9 +38,11 @@ limitations under the License.
     <!-- declare the service interface to be exported -->
      <bean id="orderService" class="com.alibaba.dubbo.demo.provider.OrderServiceImpl">
         <property name="userService" ref="userService" />
+         <property name="addressService" ref="addressService" />
     </bean>
     <dubbo:service interface="com.alibaba.dubbo.demo.OrderService" ref="orderService " timeout="40000" retries="0"/>
 
     <dubbo:reference id="userService" check="false" interface="com.alibaba.dubbo.demo.UserService" timeout="40000"   retries="0" />
+    <dubbo:reference id="addressService" check="false" interface="com.alibaba.dubbo.demo.AddressService" timeout="40000" retries="0" />
 
 </beans>

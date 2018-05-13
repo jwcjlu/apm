@@ -6,6 +6,7 @@ public class Order implements Serializable {
     private int orderId;
     private double memony;
     private User user;
+    private Address address;
     public int getOrderId() {
         return orderId;
     }
@@ -29,6 +30,9 @@ public class Order implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     @Override
     public String toString() {
@@ -36,6 +40,7 @@ public class Order implements Serializable {
                 "orderId=" + orderId +
                 ", memony=" + memony +
                 ", user=" + user +
+                ", address=" + address +
                 '}';
     }
 }

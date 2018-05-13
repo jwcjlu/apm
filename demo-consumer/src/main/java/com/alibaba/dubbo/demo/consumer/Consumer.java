@@ -21,9 +21,11 @@ import com.alibaba.dubbo.demo.Order;
 import com.alibaba.dubbo.demo.OrderService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.IOException;
+
 public class Consumer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //Prevent to get IPV6 address,this way only work in debug mode
         //But you can pass use -Djava.net.preferIPv4Stack=true,then it work well whether in debug mode or not
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -33,5 +35,6 @@ public class Consumer {
 
         Order  order=orderService.find(100,100);
         System.out.println(order);
+        System.in.read();
     }
 }

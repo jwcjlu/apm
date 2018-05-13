@@ -16,6 +16,7 @@
         <module>demo-provider</module>
         <module>demo-consumer</module>
         <module>demo-user</module>
+        <module>demo-address</module>
     </modules>
 
 <build>
