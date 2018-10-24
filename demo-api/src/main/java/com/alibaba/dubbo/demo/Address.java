@@ -1,7 +1,9 @@
 package com.alibaba.dubbo.demo;
 
 import java.io.Serializable;
-
+/**
+*SGUTU
+**/
 public class Address implements Serializable{
     private String  name;
     private int id;
